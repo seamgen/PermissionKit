@@ -11,7 +11,7 @@ import AVFoundation
 
 extension Permission {
     
-    public static let cameraAccess: CameraPermission = CameraPermission()
+    public static let camera: CameraPermission = CameraPermission()
 }
 
 
@@ -37,7 +37,9 @@ public final class CameraPermission: RequestablePermission {
         assertUsageKeyExists(.camera)
         
         AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { _ in
-            completion(self.status)
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
         }
     }
 }

@@ -1,24 +1,24 @@
 //
-//  EventsPermission.swift
+//  MediaLibraryPermission.swift
 //  Pods
 //
 //  Created by Sam Gerardi on 12/13/16.
 //
 //
 
-import EventKit
+import MediaPlayer
 
 
 extension Permission {
     
-    public static let events: EventsPermission = EventsPermission()
+    public static let mediaLibrary: MediaLibraryPermission = MediaLibraryPermission()
 }
 
 
-public final class EventsPermission: RequestablePermission {
+public final class MediaLibraryPermission: NSObject, RequestablePermission {
     
     public var status: PermissionStatus {
-        switch EKEventStore.authorizationStatus(for: .event) {
+        switch MPMediaLibrary.authorizationStatus() {
         case .notDetermined:    return .notDetermined
         case .authorized:       return .authorized
         case .restricted:       return .restricted
@@ -27,18 +27,17 @@ public final class EventsPermission: RequestablePermission {
     }
     
     public var hasBeenRequested: Bool {
-        return status != .notDetermined
+        return !status.isNotDetermined
     }
     
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
-        assertUsageKeyExists(.calendar)
+        self.assertUsageKeyExists(.mediaLibrary)
         
-        EKEventStore().requestAccess(to: EKEntityType.event) { _, _ in
+        MPMediaLibrary.requestAuthorization { _ in
             DispatchQueue.main.async {
                 completion(self.status)
             }
         }
     }
 }
-
 

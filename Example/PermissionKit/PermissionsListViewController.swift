@@ -13,10 +13,12 @@ import PermissionKit
 class PermissionsListViewController: UITableViewController {
     
     enum PermissionRows {
+        case camera
         case contacts
         case events
         case locationAlways
         case locationWhenInUse
+        case mediaLibrary
         case microphone
         case photoLibrary
         case reminders
@@ -24,10 +26,12 @@ class PermissionsListViewController: UITableViewController {
         
         var title: String {
             switch self {
+            case .camera:               return "Camera"
             case .contacts:             return "Contacts"
             case .events:               return "Events"
             case .locationAlways:       return "Location Always"
             case .locationWhenInUse:    return "Location When In Use"
+            case .mediaLibrary:         return "Media Library"
             case .microphone:           return "Microphone"
             case .photoLibrary:         return "Photo Library"
             case .reminders:            return "Reminders"
@@ -37,10 +41,12 @@ class PermissionsListViewController: UITableViewController {
         
         var permission: RequestablePermission {
             switch self {
+            case .camera:               return Permission.camera
             case .contacts:             return Permission.contacts
             case .events:               return Permission.events
             case .locationAlways:       return Permission.locationAlways
             case .locationWhenInUse: 	return Permission.locationWhenInUse
+            case .mediaLibrary:         return Permission.mediaLibrary
             case .microphone:           return Permission.microphone
             case .photoLibrary:         return Permission.photoLibrary
             case .reminders:            return Permission.reminders
@@ -49,10 +55,12 @@ class PermissionsListViewController: UITableViewController {
         }
         
         static var allRows: [PermissionRows] {
-            return [.contacts,
+            return [.camera,
+                    .contacts,
                     .events,
                     .locationWhenInUse,
                     .locationAlways,
+                    .mediaLibrary,
                     .microphone,
                     .photoLibrary,
                     .reminders,

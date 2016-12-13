@@ -10,10 +10,12 @@ import Foundation
 
 
 internal enum UsageKey: String {
+    case calendar           = "NSCalendarsUsageDescription"
     case camera             = "NSCameraUsageDescription"
     case contacts           = "NSContactsUsageDescription"
     case locationWhenInUse  = "NSLocationWhenInUseUsageDescription"
     case locationAlways     = "NSLocationAlwaysUsageDescription"
+    case mediaLibrary       = "NSAppleMusicUsageDescription"
     case microphone         = "NSMicrophoneUsageDescription"
     case photoLibrary       = "NSPhotoLibraryUsageDescription"
     case speechRecognition  = "NSSpeechRecognitionUsageDescription"
