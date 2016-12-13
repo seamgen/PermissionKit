@@ -22,21 +22,14 @@ Request and verify various iOS permissions.
                        DESC
 
   s.homepage         = 'https://github.com/sgerardi/PermissionKit'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Sam Gerardi' => 'sgerardi@seamgen.com' }
   s.source           = { :git => 'https://github.com/sgerardi/PermissionKit.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.social_media_url = 'http://www.seamgen.com'
 
   s.ios.deployment_target = '9.3'
 
   s.source_files = 'PermissionKit/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'PermissionKit' => ['PermissionKit/Assets/*.png']
-  # }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  s.frameworks = 'UIKit', 'CoreLocation', 'Contacts', 'AVFoundation', 'EventKit', 'Photos', 'Speech'
-  # s.dependency 'AFNetworking', '~> 2.3'
+s.frameworks = 'UIKit', 'CoreLocation', 'Contacts', 'AVFoundation', 'EventKit', 'Photos', 'Speech', 'MediaPlayer'
 end
