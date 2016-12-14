@@ -18,17 +18,11 @@ extension Permission {
 
 public class NotificationPermission: NSObject, RequestablePermission {
     
-    fileprivate var timer: Timer?
-    
-    fileprivate var requestedSettings: UIUserNotificationSettings?
-    
     fileprivate var completion: ((PermissionStatus) -> Void)!
     
     public var status: PermissionStatus {
-        guard hasBeenRequested else { return .notDetermined }
-        
-        if let requestedSettings = requestedSettings, let currentSettings = UIApplication.shared.currentUserNotificationSettings {
-            return requestedSettings.types == currentSettings.types ? .authorized : .notDetermined
+        if UIApplication.shared.currentUserNotificationSettings?.types.isEmpty == false {
+            return .authorized
         }
         
         return hasBeenRequested ? .denied : .notDetermined
@@ -39,19 +33,45 @@ public class NotificationPermission: NSObject, RequestablePermission {
     }
     
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
-        let notificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
-        let settings = UIUserNotificationSettings.init(types: notificationTypes, categories: nil)
-        request(withSettings: settings, completion: completion)
+        if #available(iOS 10.0, *) {
+            request(withOptions: [.alert, .badge, .sound], completion: completion)
+        } else {
+            let notificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
+            let settings = UIUserNotificationSettings.init(types: notificationTypes, categories: nil)
+            request(withSettings: settings, completion: completion)
+        }
     }
     
+    @available(iOS, deprecated: 10.0)
     public func request(withSettings settings: UIUserNotificationSettings, completion: @escaping (PermissionStatus) -> Void) {
-        self.requestedSettings = settings
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         self.completion = completion
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: .UIApplicationWillResignActive, object: nil)
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(applicationDidBecomeActive), userInfo: nil, repeats: false)
-        
         UIApplication.shared.registerUserNotificationSettings(settings)
+    }
+    
+    @available(iOS 10.0, *)
+    public func request(withOptions options: UNAuthorizationOptions, completion: @escaping (PermissionStatus) -> Void) {
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: options) { granted, error in
+            DispatchQueue.main.async {
+                UserDefaults.standard.hasRequestedNotificationPermission = true
+                completion(self.status)
+            }
+        }
     }
 }
 
@@ -63,8 +83,6 @@ extension NotificationPermission {
             let notificationCenter = NotificationCenter.default
             notificationCenter.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
             notificationCenter.addObserver(self, selector: #selector(self.applicationDidBecomeActive), name: .UIApplicationDidBecomeActive, object: nil)
-            self.timer?.invalidate()
-            self.timer = nil
         }
     }
     
@@ -73,8 +91,6 @@ extension NotificationPermission {
             let notificationCenter = NotificationCenter.default
             notificationCenter.removeObserver(self, name: .UIApplicationWillResignActive, object: nil)
             notificationCenter.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
-            self.timer?.invalidate()
-            self.timer = nil
             
             UserDefaults.standard.hasRequestedNotificationPermission = true
             
