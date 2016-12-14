@@ -33,6 +33,13 @@ public final class MediaLibraryPermission: NSObject, RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         self.assertUsageKeyExists(.mediaLibrary)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         MPMediaLibrary.requestAuthorization { _ in
             DispatchQueue.main.async {
                 completion(self.status)

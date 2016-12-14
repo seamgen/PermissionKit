@@ -33,6 +33,13 @@ public final class RemindersPermission: RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         assertUsageKeyExists(.photoLibrary)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         EKEventStore().requestAccess(to: EKEntityType.reminder) { _, _ in
             DispatchQueue.main.async {
                 completion(self.status)

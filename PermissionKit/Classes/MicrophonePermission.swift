@@ -39,6 +39,13 @@ public final class MicrophonePermission: NSObject, RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         self.assertUsageKeyExists(.microphone)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         AVAudioSession.sharedInstance().requestRecordPermission { _ in
             DispatchQueue.main.async {
                 completion(self.status)

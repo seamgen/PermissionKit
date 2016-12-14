@@ -44,18 +44,23 @@ public final class LocationAlwaysPermission: NSObject, RequestablePermission, CL
     }
     
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
-            assertUsageKeyExists(.locationAlways)
-            guard !hasBeenRequested else { return }
+        assertUsageKeyExists(.locationAlways)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
         
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(handleForegroundNotification(_:)),
-                                                   name: .UIApplicationDidBecomeActive,
-                                                   object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleForegroundNotification(_:)),
+                                               name: .UIApplicationDidBecomeActive,
+                                               object: nil)
         
-            self.completion = completion
-            locationManager.requestAlwaysAuthorization()
-            UserDefaults.standard.hasRequestedLocationAlwaysPermission = true
+        self.completion = completion
+        locationManager.requestAlwaysAuthorization()
+        UserDefaults.standard.hasRequestedLocationAlwaysPermission = true
     }
     
     @objc private func handleForegroundNotification(_ notification: Notification) {

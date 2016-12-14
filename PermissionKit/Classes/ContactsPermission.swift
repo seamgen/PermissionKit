@@ -33,6 +33,13 @@ public final class ContactsPermission: RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         assertUsageKeyExists(.contacts)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         CNContactStore().requestAccess(for: .contacts) { _, _ in
             DispatchQueue.main.async {
                 completion(self.status)

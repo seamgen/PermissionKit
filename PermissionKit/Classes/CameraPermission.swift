@@ -36,6 +36,13 @@ public final class CameraPermission: RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         assertUsageKeyExists(.camera)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { _ in
             DispatchQueue.main.async {
                 completion(self.status)

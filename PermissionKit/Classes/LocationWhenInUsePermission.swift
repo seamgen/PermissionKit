@@ -44,6 +44,13 @@ public final class LocationWhenInUsePermission: NSObject, RequestablePermission 
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         assertUsageKeyExists(.locationWhenInUse)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         self.completion = completion
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()

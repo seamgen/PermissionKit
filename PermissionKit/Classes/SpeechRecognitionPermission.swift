@@ -41,6 +41,13 @@ public final class SpeechRecognitionPermission: RequestablePermission {
         assertUsageKeyExists(.microphone)
         assertUsageKeyExists(.speechRecognition)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         SFSpeechRecognizer.requestAuthorization { _ in
             DispatchQueue.main.async {
                 completion(self.status)

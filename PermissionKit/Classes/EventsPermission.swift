@@ -33,6 +33,13 @@ public final class EventsPermission: RequestablePermission {
     public func request(_ completion: @escaping (PermissionStatus) -> Void) {
         assertUsageKeyExists(.calendar)
         
+        guard !hasBeenRequested else {
+            DispatchQueue.main.async {
+                completion(self.status)
+            }
+            return
+        }
+        
         EKEventStore().requestAccess(to: EKEntityType.event) { _, _ in
             DispatchQueue.main.async {
                 completion(self.status)
