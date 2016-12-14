@@ -13,6 +13,7 @@ PermissionKit provides a simple framework for requesting permission to access co
 * Location
 * Media Library
 * Microphone
+* Notifications
 * Photo Library
 * Reminders
 * Speech Recognition (iOS 10+)
