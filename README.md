@@ -37,18 +37,25 @@ let result = Permission.locationWhenInUse.status
 To check if permission has been requested:
 
 ```swift
-import PermissionKit
-
 let result = Permission.locationWhenInUse.hasBeenRequested
 ```
 
 To request permission:
 
 ```swift
-import PermissionKit
-
 Permission.locationWhenInUse.request { status in
 	// Handle permission status
+}
+```
+
+or:
+
+```swift
+// iOS 9
+let types: UIUserNotificationType = [.alert, .sound, .badge]
+let settings = UIUserNotificationSettings(types: types, categories: nil)
+Permission.notification.request(withSettings: settings) { status in
+    // Handle permission status
 }
 ```
 
