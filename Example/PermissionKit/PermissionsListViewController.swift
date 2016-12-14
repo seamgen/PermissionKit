@@ -20,6 +20,7 @@ class PermissionsListViewController: UITableViewController {
         case locationWhenInUse
         case mediaLibrary
         case microphone
+        case notifications
         case photoLibrary
         case reminders
         case speechRecognition
@@ -33,6 +34,7 @@ class PermissionsListViewController: UITableViewController {
             case .locationWhenInUse:    return "Location When In Use"
             case .mediaLibrary:         return "Media Library"
             case .microphone:           return "Microphone"
+            case .notifications:        return "Notifications"
             case .photoLibrary:         return "Photo Library"
             case .reminders:            return "Reminders"
             case .speechRecognition:    return "Speech Recognition"
@@ -48,6 +50,7 @@ class PermissionsListViewController: UITableViewController {
             case .locationWhenInUse: 	return Permission.locationWhenInUse
             case .mediaLibrary:         return Permission.mediaLibrary
             case .microphone:           return Permission.microphone
+            case .notifications:        return Permission.notification
             case .photoLibrary:         return Permission.photoLibrary
             case .reminders:            return Permission.reminders
             case .speechRecognition:    return Permission.speechRecognition
@@ -62,6 +65,7 @@ class PermissionsListViewController: UITableViewController {
                     .locationAlways,
                     .mediaLibrary,
                     .microphone,
+                    .notifications,
                     .photoLibrary,
                     .reminders,
                     .speechRecognition]
