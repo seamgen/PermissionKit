@@ -1,9 +1,6 @@
 # PermissionKit
 
 [![CI Status](https://img.shields.io/badge/Swift-3.0-orange.svg)](https://swift.org)
-[![Version](https://img.shields.io/cocoapods/v/PermissionKit.svg?style=flat)](http://cocoapods.org/pods/PermissionKit)
-[![License](https://img.shields.io/cocoapods/l/PermissionKit.svg?style=flat)](http://cocoapods.org/pods/PermissionKit)
-[![Platform](https://img.shields.io/cocoapods/p/PermissionKit.svg?style=flat)](http://cocoapods.org/pods/PermissionKit)
 
 PermissionKit provides a simple framework for requesting permission to access common iOS features.
 
@@ -51,7 +48,17 @@ Permission.locationWhenInUse.request { status in
 or:
 
 ```swift
-// iOS 9
+// Any iOS version
+Permission.notification.request { status in
+    // Handle permission status
+}
+
+// iOS 10 Specific
+Permission.notification.request(withOptions: [.alert, .badge, .sound]) { status in
+    // Handle permission status 
+}
+
+// iOS 9 Specific
 let types: UIUserNotificationType = [.alert, .sound, .badge]
 let settings = UIUserNotificationSettings(types: types, categories: nil)
 Permission.notification.request(withSettings: settings) { status in
