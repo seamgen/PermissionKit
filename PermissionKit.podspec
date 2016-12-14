@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'PermissionKit'
   s.version          = '0.1.0'
-  s.summary          = 'Request and verify various iOS permissions.'
+  s.summary          = 'Request user permission to access common iOS features.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-Request and verify various iOS permissions.
+An easy way to request permission to access common iOS features.
                        DESC
 
   s.homepage         = 'https://github.com/sgerardi/PermissionKit'
@@ -31,5 +31,5 @@ Request and verify various iOS permissions.
 
   s.source_files = 'PermissionKit/Classes/**/*'
 
-s.frameworks = 'UIKit', 'CoreLocation', 'Contacts', 'AVFoundation', 'EventKit', 'Photos', 'Speech', 'MediaPlayer'
+  s.frameworks = 'UIKit', 'CoreLocation', 'Contacts', 'AVFoundation', 'EventKit', 'Photos', 'Speech', 'MediaPlayer'
 end
